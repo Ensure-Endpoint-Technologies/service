@@ -187,6 +187,7 @@ func (s *darwinLaunchdService) Install() error {
 		Path string
 
 		KeepAlive, RunAtLoad bool
+		SuccessfulExit       bool
 		SessionCreate        bool
 		StandardOutPath      string
 		StandardErrorPath    string
@@ -195,6 +196,7 @@ func (s *darwinLaunchdService) Install() error {
 		Path:              path,
 		KeepAlive:         s.Option.bool(optionKeepAlive, optionKeepAliveDefault),
 		RunAtLoad:         s.Option.bool(optionRunAtLoad, optionRunAtLoadDefault),
+		SuccessfulExit:    s.Option.bool(optionSuccessfulExit, optionSuccessfulExitDefault),
 		SessionCreate:     s.Option.bool(optionSessionCreate, optionSessionCreateDefault),
 		StandardOutPath:   stdOutPath,
 		StandardErrorPath: stdErrPath,
@@ -306,7 +308,14 @@ var launchdConfig = `<?xml version="1.0" encoding="UTF-8"?>
 	</dict>
 	{{- end}}
 	<key>KeepAlive</key>
-	<{{bool .KeepAlive}}/>
+	{{- if .KeepAlive }}
+	<dict>
+		<key>SucessfulExit</key>
+		<{{bool .SuccessfulExit}} />
+	</dict>
+	{{- else }}
+	<false />
+	{{- end }}
 	<key>Label</key>
 	<string>{{html .Name}}</string>
 	<key>ProgramArguments</key>
