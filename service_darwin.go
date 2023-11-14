@@ -351,6 +351,13 @@ var launchdConfig = `<?xml version="1.0" encoding="UTF-8"?>
 	<key>WorkingDirectory</key>
 	<string>{{html .WorkingDirectory}}</string>
 	{{- end}}
+	<key>MachServices</key>
+	<dict>
+		<key>{{ .Name }}</key>
+		<true/>
+	</dict>
+	<key>AssociatedBundleIdentifiers</key>
+	<string>{{ .Name }}</string>
 </dict>
 </plist>
 `
